@@ -12,7 +12,7 @@ document.addEventListener('click', ({ target }) => {
     const itemEdit = target.closest('.list-group-item');
     const elementText = itemEdit.querySelector('.item-text');
     const currentText = elementText.textContent;
-    const editedText = prompt('Введите новое значение...', currentText).trim();
+    const editedText = prompt('Введите новое значение', currentText).trim();
 
     if (editedText) {
       updated(id, editedText).then(() => {
