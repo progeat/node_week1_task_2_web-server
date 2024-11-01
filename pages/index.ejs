@@ -37,18 +37,12 @@
           <% for (let i = 0; i < notes.length; i++) { %>
           <li
             class="list-group-item d-flex justify-content-between align-items-center"
+            id="<%= notes[i].id %>"
           >
-            <p class="item-text"><%= notes[i].title %></p>
+            <span class="item-text"><%= notes[i].title %></span>
 
             <div class="btn-wrapp">
-              <button
-                class="btn btn-primary"
-                data-type="edit"
-                data-id="<%= notes[i].id %>"
-                data-value="<%= notes[i].title %>"
-              >
-                Редактировать
-              </button>
+              <button class="btn btn-primary" data-type="edit">Обновить</button>
               <button
                 class="btn btn-danger"
                 data-type="remove"
