@@ -1,6 +1,7 @@
 const express = require('express');
 const chalk = require('chalk');
 const path = require('path');
+const mongoose = require('mongoose');
 const {
   addNote,
   getNotes,
@@ -27,16 +28,28 @@ app.get('/', async (req, res) => {
     title: 'Express App',
     notes: await getNotes(),
     created: false,
+    error: false,
   });
 });
 
 app.post('/', async (req, res) => {
-  await addNote(req.body.title);
-  res.render('index', {
-    title: 'Express App',
-    notes: await getNotes(),
-    created: true,
-  });
+  try {
+    await addNote(req.body.title);
+    res.render('index', {
+      title: 'Express App',
+      notes: await getNotes(),
+      created: true,
+      error: false,
+    });
+  } catch (e) {
+    console.error('Creation error, e');
+    res.render('index', {
+      title: 'Express App',
+      notes: await getNotes(),
+      created: false,
+      error: true,
+    });
+  }
 });
 
 app.put('/:id', async (req, res) => {
@@ -45,6 +58,7 @@ app.put('/:id', async (req, res) => {
     title: 'Express App',
     notes: await getNotes(),
     created: false,
+    error: false,
   });
 });
 
@@ -54,9 +68,16 @@ app.delete('/:id', async (req, res) => {
     title: 'Express App',
     notes: await getNotes(),
     created: false,
+    error: false,
   });
 });
 
-app.listen(port, () => {
-  console.log(chalk.green(`Server has been started on port ${port}...`));
-});
+mongoose
+  .connect(
+    'mongodb+srv://progeat:silviaS2000@clustertest.vfynt.mongodb.net/notes?retryWrites=true&w=majority&appName=ClusterTest'
+  )
+  .then(() => {
+    app.listen(port, () => {
+      console.log(chalk.green(`Server has been started on port ${port}...`));
+    });
+  });
